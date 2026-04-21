@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
-export default function MosaicGrid({ sections }) {
+export default function MosaicGrid({ sections, animate = true }) {
   const [lbOpen, setLbOpen] = useState(false)
   const [lbImages, setLbImages] = useState([])
   const [lbIndex, setLbIndex] = useState(0)
@@ -24,10 +25,31 @@ export default function MosaicGrid({ sections }) {
     }, 150)
   }
 
-  // Keyboard
-  typeof window !== 'undefined' && (() => {
-    // handled inline — using useEffect in parent
-  })()
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 18,
+        duration: 0.6
+      }
+    }
+  }
 
   return (
     <>
@@ -39,11 +61,18 @@ export default function MosaicGrid({ sections }) {
               {section.title && <h3 className="mosaic-title">{section.title}</h3>}
             </div>
           )}
-          <div className="mosaic-grid">
+          <motion.div 
+            className="mosaic-grid"
+            variants={animate ? containerVariants : {}}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             {section.items.map((item, idx) => (
-              <div
+              <motion.div
                 key={idx}
                 className={`mosaic-item${item.tall ? ' tall' : ''}${item.wide ? ' wide' : ''}`}
+                variants={animate ? itemVariants : {}}
                 onClick={() => openLb(section.items, idx)}
               >
                 <img
@@ -53,9 +82,9 @@ export default function MosaicGrid({ sections }) {
                   onLoad={(e) => e.target.classList.add('img-loaded')}
                 />
                 <div className="mosaic-overlay">🔍</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       ))}
 

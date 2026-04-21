@@ -45,7 +45,7 @@ export default function ProjetsUX() {
           <p className="site-desc">Un outil complet conçu pour centraliser toutes les ressources de révision. L'architecture a été pensée pour une navigation fluide sur mobile et desktop.</p>
           <a href="https://tharsananarul.github.io/fdr-bts-com/" target="_blank" rel="noreferrer" className="btn-primary">Voir le site en direct →</a>
         </div>
-        <MosaicGrid sections={[{ items: btsItems }]} />
+        <MosaicGrid sections={[{ items: btsItems }]} animate={false} />
       </div>
 
       {/* HopePower */}
@@ -56,7 +56,7 @@ export default function ProjetsUX() {
           <p className="site-desc">Conception d'une interface pour une application axée sur l'énergie durable. Focus sur les contrastes, la lisibilité et l'aspect premium de l'interface.</p>
           <a href="https://tharsananarul.github.io/hopepower/" target="_blank" rel="noreferrer" className="btn-primary">Voir la maquette →</a>
         </div>
-        <MosaicGrid sections={[{ items: hopeItems }]} />
+        <MosaicGrid sections={[{ items: hopeItems }]} animate={false} />
       </div>
 
       <div className="projet-next">
