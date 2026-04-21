@@ -7,14 +7,32 @@ export default function Contact() {
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
+    
+    const formData = new FormData(e.target)
+    formData.append("access_key", "9aabeca0-1cd7-4210-8c95-e2985338c102")
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setSent(true)
+        e.target.reset()
+      } else {
+        alert("Une erreur est survenue. Veuillez réessayer.")
+      }
+    } catch (error) {
+      alert("Erreur de connexion. Veuillez vérifier votre réseau.")
+    } finally {
       setLoading(false)
-      setSent(true)
-      e.target.reset()
-    }, 1500)
+    }
   }
 
   return (
