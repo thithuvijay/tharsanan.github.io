@@ -7,20 +7,20 @@ export default function ProjetBtsCom() {
   useReveal()
   const sections = [{
     items: [
-      { src: 'images/bts-com/affichea0.png', alt: 'Affiche A0', tall: true },
-      { src: 'images/bts-com/affichea0mockup.png', alt: 'Affiche A0 mockup' },
-      { src: 'images/bts-com/affiche-inscription.png', alt: 'Affiche inscription' },
-      { src: 'images/bts-com/kakemono.png', alt: 'Kakémono', tall: true },
-      { src: 'images/bts-com/kakemono-mockup.png', alt: 'Kakémono mockup' },
-      { src: 'images/bts-com/rollup-mockup.png', alt: 'Roll-up mockup' },
-      { src: 'images/bts-com/mockuppull.png', alt: 'Mockup pull' },
-      { src: 'images/bts-com/instgram-mockup.png', alt: 'Instagram mockup' },
-      { src: 'images/bts-com/postscc01.png', alt: 'Post SCC 1' },
-      { src: 'images/bts-com/postscc02.png', alt: 'Post SCC 2' },
-      { src: 'images/bts-com/sdcipost.png', alt: 'Post SDCI' },
-      { src: 'images/bts-com/expo-com.png', alt: 'Expo communication', wide: true },
-      { src: 'images/bts-com/expocompost.png', alt: 'Expo com post' },
-      { src: 'images/bts-com/newsletter.png', alt: 'Newsletter' },
+      { src: 'images/bts-com/affichea0.jpg', alt: 'Affiche A0', tall: true },
+      { src: 'images/bts-com/affichea0mockup.jpg', alt: 'Affiche A0 mockup' },
+      { src: 'images/bts-com/affiche-inscription.jpg', alt: 'Affiche inscription' },
+      { src: 'images/bts-com/kakemono.jpg', alt: 'Kakémono', tall: true },
+      { src: 'images/bts-com/kakemono-mockup.jpg', alt: 'Kakémono mockup' },
+      { src: 'images/bts-com/rollup-mockup.jpg', alt: 'Roll-up mockup' },
+      { src: 'images/bts-com/mockuppull.jpg', alt: 'Mockup pull' },
+      { src: 'images/bts-com/instgram-mockup.jpg', alt: 'Instagram mockup' },
+      { src: 'images/bts-com/postscc01.jpg', alt: 'Post SCC 1' },
+      { src: 'images/bts-com/postscc02.jpg', alt: 'Post SCC 2' },
+      { src: 'images/bts-com/sdcipost.jpg', alt: 'Post SDCI' },
+      { src: 'images/bts-com/expo-com.jpg', alt: 'Expo communication', wide: true },
+      { src: 'images/bts-com/expocompost.jpg', alt: 'Expo com post' },
+      { src: 'images/bts-com/newsletter.jpg', alt: 'Newsletter' },
 
     ]
   }]
