@@ -66,13 +66,13 @@ export default function PassionSection() {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(0.25) saturate(0.8)' }}
+          style={{ filter: 'brightness(0.45) saturate(0.9)' }}
         >
           <source src={`${baseUrl}videos/bmw-bg.mp4`} type="video/mp4" />
         </video>
         {/* Gradient overlays for readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary via-transparent to-primary" />
-        <div className="absolute inset-0 bg-primary/40" />
+        <div className="absolute inset-0 bg-primary/20" />
       </div>
 
       <div className="section-container relative z-10">

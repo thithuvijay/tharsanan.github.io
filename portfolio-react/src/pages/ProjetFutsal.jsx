@@ -149,7 +149,7 @@ export default function ProjetFutsal() {
             </div>
             <div className="glass-card p-6 md:p-8 rounded-3xl">
               <Users className="text-accent-light mb-4" size={28} />
-              <h3 className="text-sm md:text-lg font-bold mb-2">Événementiel</h3>
+              <h3 className="text-xs sm:text-sm md:text-lg font-bold mb-2 break-words">Événementiel</h3>
               <p className="text-text-muted text-[10px] md:text-xs">Téléthon & Fête de la ville.</p>
             </div>
             <div className="glass-card p-6 md:p-8 rounded-3xl">
