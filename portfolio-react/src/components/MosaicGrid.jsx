@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Search, Maximize2 } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 
 export default function MosaicGrid({ sections, animate = true }) {
   const [lbOpen, setLbOpen] = useState(false)
@@ -19,15 +20,155 @@ export default function MosaicGrid({ sections, animate = true }) {
     document.body.style.overflow = ''
   }
 
-  const navigate = (dir) => {
-    setLbIndex((i) => (i + dir + lbImages.length) % lbImages.length)
-  }
+  const prev = () => setLbIndex((i) => (i - 1 + lbImages.length) % lbImages.length)
+  const next = () => setLbIndex((i) => (i + 1) % lbImages.length)
 
   useEffect(() => {
-    const handleEsc = (e) => { if (e.key === 'Escape') closeLb() }
-    window.addEventListener('keydown', handleEsc)
-    return () => window.removeEventListener('keydown', handleEsc)
-  }, [])
+    if (!lbOpen) return
+    const handleKey = (e) => {
+      if (e.key === 'Escape') closeLb()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [lbOpen, lbImages.length])
+
+  // Lightbox rendered via Portal so it escapes any parent transform/overflow
+  const lightbox = lbOpen ? createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0,0,0,0.95)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        touchAction: 'none',
+      }}
+      onClick={closeLb}
+    >
+      {/* Center block: close button + image + counter */}
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button — right above the image */}
+        <button
+          onClick={closeLb}
+          style={{
+            alignSelf: 'flex-end',
+            marginBottom: '8px',
+            padding: '10px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255,255,255,0.15)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            color: 'white',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.3)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)'}
+        >
+          <X size={20} />
+        </button>
+
+        {/* Image */}
+        <img
+          src={lbImages[lbIndex]?.src}
+          alt={lbImages[lbIndex]?.alt || ''}
+          style={{
+            maxWidth: '85vw',
+            maxHeight: '70vh',
+            objectFit: 'contain',
+            borderRadius: '12px',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }}
+        />
+
+        {/* Counter below image */}
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '6px 16px',
+            borderRadius: '999px',
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.05)',
+            color: 'rgba(255,255,255,0.7)',
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          {lbIndex + 1} / {lbImages.length}
+        </div>
+      </div>
+
+      {/* Nav arrow left */}
+      <button
+        onClick={(e) => { e.stopPropagation(); prev() }}
+        style={{
+          position: 'fixed',
+          left: '8px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          padding: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'white',
+          cursor: 'pointer',
+          backdropFilter: 'blur(8px)',
+          transition: 'background-color 0.2s',
+          zIndex: 10000,
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+      >
+        <ChevronLeft size={18} />
+      </button>
+
+      {/* Nav arrow right */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next() }}
+        style={{
+          position: 'fixed',
+          right: '8px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          padding: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'white',
+          cursor: 'pointer',
+          backdropFilter: 'blur(8px)',
+          transition: 'background-color 0.2s',
+          zIndex: 10000,
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+      >
+        <ChevronRight size={18} />
+      </button>
+    </div>,
+    document.body
+  ) : null
 
   return (
     <>
@@ -112,68 +253,7 @@ export default function MosaicGrid({ sections, animate = true }) {
         </div>
       ))}
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lbOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[200] bg-black/98 overflow-hidden touch-none"
-            style={{ height: '100dvh' }}
-            onClick={closeLb}
-          >
-            {/* Close button — fixed top-right, always visible */}
-            <button 
-              className="fixed top-4 right-4 z-[250] p-3 rounded-full bg-white/15 hover:bg-white/25 transition-colors text-white backdrop-blur-md border border-white/10"
-              onClick={(e) => { e.stopPropagation(); closeLb() }}
-            >
-              <X size={20} />
-            </button>
-
-            {/* Counter — fixed top-left */}
-            <div className="fixed top-4 left-4 z-[250] px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white/70 text-[10px] font-bold border border-white/5 uppercase tracking-widest">
-              {lbIndex + 1} / {lbImages.length}
-            </div>
-
-            {/* Image — perfectly centered */}
-            <div className="absolute inset-0 flex items-center justify-center p-12 md:p-16">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={lbIndex}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.25 }}
-                  className="flex items-center justify-center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src={lbImages[lbIndex]?.src}
-                    alt={lbImages[lbIndex]?.alt || ''}
-                    className="max-w-[85vw] max-h-[65dvh] md:max-w-[70vw] md:max-h-[75dvh] object-contain rounded-xl shadow-2xl border border-white/5"
-                  />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Nav arrows — fixed center-left and center-right */}
-            <button 
-              className="fixed left-2 md:left-6 top-1/2 -translate-y-1/2 z-[250] p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/5 backdrop-blur-md"
-              onClick={(e) => { e.stopPropagation(); navigate(-1) }}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button 
-              className="fixed right-2 md:right-6 top-1/2 -translate-y-1/2 z-[250] p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/5 backdrop-blur-md"
-              onClick={(e) => { e.stopPropagation(); navigate(1) }}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {lightbox}
     </>
   )
 }
