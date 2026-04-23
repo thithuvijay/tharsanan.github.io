@@ -73,30 +73,26 @@ export default function ProjetFutsal() {
       </div>
 
       {/* Optimized Hero Header */}
-      <div className="relative h-[40vh] md:h-[50vh] overflow-hidden" ref={containerRef}>
+      <div className="relative h-[40vh] md:h-[60vh] overflow-hidden" ref={containerRef}>
         <motion.div 
           style={{ y }}
-          className="absolute inset-0 bg-[#111d30]"
+          className="absolute inset-0 bg-[#0d1525]"
         >
           <img 
-            src={`${baseUrl}images/futsal-drancy/b2-club.png`} 
-            alt="Futsal Drancy" 
-            className="w-full h-full object-cover opacity-30"
+            src={`${baseUrl}images/couvertures/futsal-drancy.png`} 
+            alt="Futsal Drancy Cover" 
+            className="w-full h-full object-cover"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent" />
         <div className="absolute inset-0 flex flex-col justify-end section-container pb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Magnetic>
-              <Link to="/projets" className="inline-flex items-center gap-2 text-accent-light font-bold mb-6 hover:gap-4 transition-all">
-                <ArrowLeft size={20} /> Retour aux projets
-              </Link>
-            </Magnetic>
-            <h1 className="text-3xl md:text-8xl font-extrabold text-white tracking-tighter leading-none">
-              Futsal <span className="highlight italic">Drancy.</span>
+            <h1 className="text-4xl md:text-8xl font-black text-white tracking-tighter leading-none font-heading">
+              Futsal <span className="text-accent-light italic">Drancy.</span>
             </h1>
           </motion.div>
         </div>
@@ -105,20 +101,20 @@ export default function ProjetFutsal() {
       {/* Project Meta */}
       <section className="section-container grid grid-cols-2 md:grid-cols-4 gap-8 py-12 md:py-16 border-b border-white/5">
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Rôle</span>
-          <p className="font-bold">Chargé de Communication</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Rôle</span>
+          <p className="font-bold text-sm md:text-base">Chargé de Communication</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Période</span>
-          <p className="font-bold">2024 — Présent</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Période</span>
+          <p className="font-bold text-sm md:text-base">2024 — Présent</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Outils</span>
-          <p className="font-bold">Adobe Suite, React</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Outils</span>
+          <p className="font-bold text-sm md:text-base">Adobe Suite, React</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Contexte</span>
-          <p className="font-bold text-xs uppercase tracking-tight">Service Civique & CDD</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Contexte</span>
+          <p className="font-bold text-sm md:text-base">Service Civique & CDD</p>
         </div>
       </section>
 

@@ -55,12 +55,10 @@ export default function ProjetsUX() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link to="/projets" className="inline-flex items-center gap-2 text-accent-light font-bold mb-6 hover:gap-4 transition-all">
-              <ArrowLeft size={20} /> Retour aux projets
-            </Link>
-            <h1 className="text-4xl md:text-8xl font-extrabold text-white tracking-tighter">
-              UI/UX <span className="highlight">Works.</span>
+            <h1 className="text-4xl md:text-8xl font-black text-white tracking-tighter font-heading">
+              UI/UX <span className="text-accent-light italic">Works.</span>
             </h1>
           </motion.div>
         </div>
@@ -69,20 +67,20 @@ export default function ProjetsUX() {
       {/* Project Meta */}
       <section className="section-container grid grid-cols-2 md:grid-cols-4 gap-8 py-12 md:py-16 border-b border-white/5">
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Expertise</span>
-          <p className="font-bold">HTML, CSS, React</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Expertise</span>
+          <p className="font-bold text-sm md:text-base">HTML, CSS, React</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Période</span>
-          <p className="font-bold">Temps Libre</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Période</span>
+          <p className="font-bold text-sm md:text-base">Temps Libre</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Outils</span>
-          <p className="font-bold">VS Code, Figma</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Outils</span>
+          <p className="font-bold text-sm md:text-base">VS Code, Figma</p>
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Type</span>
-          <p className="font-bold">Projets Personnels</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-light/50">Type</span>
+          <p className="font-bold text-sm md:text-base">Projets Personnels</p>
         </div>
       </section>
 

@@ -44,7 +44,7 @@ export default function Footer() {
             <div>
               <h4 className="font-bold mb-6 text-white tracking-tight">Contact</h4>
               <ul className="space-y-4 text-text-muted text-sm font-medium">
-                <li><a href="mailto:tharsananarul@gmail.com" className="hover:text-accent-light transition-colors">tharsananarul@gmail.com</a></li>
+                <li><a href="mailto:tharsananarul@gmail.com" className="hover:text-accent-light transition-colors block break-all">tharsananarul@gmail.com</a></li>
                 <li><a href="tel:0749878775" className="hover:text-accent-light transition-colors font-bold tracking-tight">07 49 87 87 75</a></li>
               </ul>
             </div>

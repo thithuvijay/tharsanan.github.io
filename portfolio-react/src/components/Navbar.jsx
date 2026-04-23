@@ -11,6 +11,67 @@ const navLinks = [
   { name: 'Contact', path: '/contact' },
 ]
 
+const LogoScramble = () => {
+  const [text, setText] = useState('T')
+  const [isHovered, setIsHovered] = useState(false)
+  const fullText = 'THARSANAN'
+  const shortText = 'T'
+  const chars = '!<>-_\\/[]{}—=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+  useEffect(() => {
+    if (!isHovered) {
+      setText(shortText)
+      return
+    }
+
+    let frame = 0
+    let timer
+    const targetText = fullText
+    const queue = targetText.split('').map((char, i) => ({
+      to: char,
+      start: Math.floor(Math.random() * 20),
+      end: Math.floor(Math.random() * 20) + 20
+    }))
+
+    const update = () => {
+      let out = ''
+      let done = 0
+      for (let i = 0; i < queue.length; i++) {
+        let { to, start, end } = queue[i]
+        if (frame >= end) {
+          done++
+          out += to
+        } else if (frame >= start) {
+          out += chars[Math.floor(Math.random() * chars.length)]
+        } else {
+          out += ' '
+        }
+      }
+      setText(out)
+      if (done < queue.length) {
+        frame++
+        timer = requestAnimationFrame(update)
+      }
+    }
+    update()
+    return () => cancelAnimationFrame(timer)
+  }, [isHovered])
+
+  return (
+    <Link 
+      to="/" 
+      className="logo group p-2 min-w-[40px] inline-block"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <span className="font-heading font-extrabold tracking-tighter text-white">
+        {text}
+        <span className="text-accent-light">.</span>
+      </span>
+    </Link>
+  )
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -23,6 +84,16 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Body scroll lock
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [isOpen])
+
   useEffect(() => {
     setIsOpen(false)
     window.scrollTo(0, 0)
@@ -32,15 +103,13 @@ export default function Navbar() {
     <nav 
       className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 md:px-[5vw] transition-all duration-700 ease-[0.16,1,0.3,1] ${
         scrolled 
-          ? 'bg-[#080e1a]/95 md:bg-[#080e1a]/80 backdrop-blur-[20px] border-b border-white/5 py-3 md:py-5' 
+          ? 'bg-[#080e1a] border-b border-white/10 py-3 md:py-5 shadow-2xl' 
           : 'bg-transparent py-6 md:py-12'
       }`}
     >
       {/* Logo */}
       <Magnetic>
-        <Link to="/" className="logo group p-2">
-          T<span className="group-hover:text-white transition-colors duration-500">.</span>
-        </Link>
+        <LogoScramble />
       </Magnetic>
 
       {/* Desktop Nav */}
@@ -93,45 +162,63 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, clipPath: 'circle(0% at 90% 10%)' }}
-            animate={{ opacity: 1, clipPath: 'circle(150% at 90% 10%)' }}
-            exit={{ opacity: 0, clipPath: 'circle(0% at 90% 10%)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 bg-[#080e1a] z-[105] flex flex-col items-center justify-center gap-8 md:hidden"
-          >
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.8 }}
-              >
-                <Link
-                  to={link.path}
-                  className={`text-5xl font-heading font-extrabold tracking-tighter ${
-                    location.pathname === link.path ? 'text-accent-light' : 'text-white'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              </motion.div>
-            ))}
-            
-            <motion.div 
+          <>
+            {/* Backdrop Overlay */}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex items-center gap-10 mt-8"
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-primary/60 backdrop-blur-md z-[101] md:hidden"
+            />
+            
+            {/* Sidebar Menu */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ willChange: 'transform' }}
+              className="fixed top-0 right-0 bottom-0 w-[65%] sm:w-64 bg-[#0d1525] z-[105] flex flex-col shadow-[-10px_0_40px_rgba(0,0,0,0.9)] md:hidden border-l border-white/10"
             >
-              <a href={linkedinUrl} target="_blank" rel="noreferrer" className="text-white/60 hover:text-white transition-colors">
-                <Linkedin size={32} />
-              </a>
-              <a href={linkedinUrl} target="_blank" rel="noreferrer" className="text-white/60 hover:text-white transition-colors">
-                <Github size={32} />
-              </a>
+              <div className="flex flex-col p-8 pt-24 gap-6">
+                <p className="text-accent-light font-black tracking-[0.4em] uppercase text-[8px] mb-4 opacity-40">Menu</p>
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05, duration: 0.3 }}
+                  >
+                    <Link
+                      to={link.path}
+                      className={`text-[10px] font-black tracking-[0.3em] uppercase block py-2 transition-all duration-300 ${
+                        location.pathname === link.path 
+                          ? 'text-accent-light' 
+                          : 'text-white/40 hover:text-white'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="mt-auto p-8 border-t border-white/5 bg-[#080e1a]/50">
+                <div className="flex items-center gap-6 mb-8">
+                  <a href={linkedinUrl} target="_blank" rel="noreferrer" className="text-white/30 hover:text-white transition-colors">
+                    <Linkedin size={18} />
+                  </a>
+                  <a href={linkedinUrl} target="_blank" rel="noreferrer" className="text-white/30 hover:text-white transition-colors">
+                    <Github size={18} />
+                  </a>
+                </div>
+                <p className="text-white/15 font-black tracking-[0.2em] uppercase text-[7px] leading-relaxed">
+                  © 2026 THARSANAN
+                </p>
+              </div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>

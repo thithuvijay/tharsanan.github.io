@@ -58,70 +58,70 @@ export default function Projets() {
   const baseUrl = import.meta.env.BASE_URL
 
   return (
-    <main className="relative pt-24 md:pt-32 pb-20 bg-primary min-h-screen">
+    <main className="relative pt-24 md:pt-40 pb-20 bg-primary min-h-screen">
       <section className="section-container relative z-10">
-        <header className="max-w-4xl mb-24 md:mb-32">
+        <header className="max-w-4xl mb-16 md:mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-accent-light font-bold tracking-[0.3em] uppercase mb-6 text-xs md:text-sm flex items-center gap-3">
+            <p className="text-accent-light font-bold tracking-[0.3em] uppercase mb-4 text-[10px] md:text-xs flex items-center gap-3">
               <span className="w-8 h-px bg-accent-light/60" />
-              Portfolio
+              Réalisations
             </p>
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[0.9]"
+            className="text-4xl md:text-8xl font-extrabold mb-6 tracking-tighter leading-[1]"
           >
-            Mes <span className="highlight italic">Réalisations.</span>
+            Découvrez <br />
+            <span className="highlight italic">mon univers.</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-xl text-text-muted leading-relaxed max-w-2xl font-medium"
+            className="text-sm md:text-xl text-text-muted leading-relaxed max-w-2xl font-medium"
           >
-            Une sélection de projets mêlant stratégie de communication, design graphique et développement web.
+            Une collection de projets variés, allant du design d'interface à la stratégie de communication, illustrant ma polyvalence et ma passion pour la création.
           </motion.p>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-10">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.05, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <Link to={project.path} className="group relative block aspect-[16/10] md:aspect-[16/9] rounded-[2.5rem] overflow-hidden glass-card shadow-2xl">
-                <img 
-                  src={`${baseUrl}${project.img}`} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                  onError={(e) => { e.target.style.opacity = '0.2'; }}
-                />
+              <Link to={project.path} className="group flex flex-col bg-card/30 border border-white/5 rounded-[2rem] overflow-hidden hover:border-accent-light/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5">
+                <div className="aspect-[16/10] overflow-hidden relative">
+                  <img 
+                    src={`${baseUrl}${project.img}`} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                    onError={(e) => { e.target.style.opacity = '0.2'; }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
                 
-                {/* Hover Reveal Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-                  <div className="flex flex-col gap-4 opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-8 group-hover:translate-y-0">
-                    <span className="text-accent-light font-bold text-[10px] tracking-widest uppercase">
-                      {project.tag}
-                    </span>
-                    <h3 className="text-2xl md:text-4xl font-bold text-white tracking-tighter">
-                      {project.title}
-                    </h3>
-                    <div className="pt-4">
-                      <span className="btn-premium py-3 px-6 text-xs inline-flex items-center gap-2">
-                        Découvrir le projet <ArrowRight size={14} />
-                      </span>
-                    </div>
+                <div className="p-6 md:p-10 flex flex-col flex-grow">
+                  <span className="text-accent-light font-bold text-[10px] tracking-widest uppercase mb-3">
+                    {project.tag}
+                  </span>
+                  <h3 className="text-xl md:text-3xl font-bold text-white tracking-tighter mb-4 group-hover:text-accent-light transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-text-muted text-xs md:text-base leading-relaxed mb-8 line-clamp-2">
+                    {project.desc}
+                  </p>
+                  <div className="mt-auto pt-4 flex items-center gap-2 font-bold text-[10px] md:text-xs uppercase tracking-widest text-white group-hover:gap-4 transition-all">
+                    Explorer <ArrowRight size={14} className="text-accent-light" />
                   </div>
                 </div>
               </Link>

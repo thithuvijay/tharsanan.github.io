@@ -46,7 +46,7 @@ const TextScramble = ({ text }) => {
   return <span>{displayText || text}</span>
 }
 
-const StatCard = ({ number, label, suffix = "+", delay = 0 }) => {
+const StatCard = ({ number, label, suffix = "+", delay = 0, duration = 3000 }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [count, setCount] = useState(0)
@@ -55,18 +55,25 @@ const StatCard = ({ number, label, suffix = "+", delay = 0 }) => {
     if (isInView) {
       let start = 0
       const end = parseInt(number)
-      const duration = 2000
-      const increment = end / (duration / 16)
+      const frameRate = 1000 / 60
+      const totalFrames = Math.round(duration / frameRate)
+      let currentFrame = 0
       
       const timer = setInterval(() => {
-        start += increment
-        if (start >= end) {
+        currentFrame++
+        const progress = currentFrame / totalFrames
+        // Ease out quad
+        const easeProgress = progress * (2 - progress)
+        
+        const currentCount = Math.floor(easeProgress * end)
+        setCount(currentCount)
+        
+        if (currentFrame === totalFrames) {
           setCount(end)
           clearInterval(timer)
-        } else {
-          setCount(Math.floor(start))
         }
-      }, 16)
+      }, frameRate)
+      
       return () => clearInterval(timer)
     }
   }, [isInView, number])
@@ -79,9 +86,9 @@ const StatCard = ({ number, label, suffix = "+", delay = 0 }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -10, transition: { duration: 0.4 } }}
-      className="glass-card p-6 md:p-8 rounded-2xl flex flex-col items-center text-center group"
+      className="glass-card p-6 md:p-8 rounded-2xl flex flex-col items-center text-center group border-white/5"
     >
-      <span className="text-4xl md:text-5xl font-extrabold text-accent-light mb-2 tracking-tighter">
+      <span className="text-4xl md:text-5xl font-extrabold text-accent-light mb-2 tracking-tighter font-heading">
         {count}{suffix}
       </span>
       <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-text-muted group-hover:text-white transition-colors">
@@ -194,7 +201,7 @@ export default function Home() {
             >
               <Magnetic>
                 <Link to="/projets" className="btn-premium gap-3 group w-full sm:w-auto">
-                  Voir mes projets
+                  Découvrir mes projets
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Magnetic>
@@ -223,15 +230,18 @@ export default function Home() {
               <div className="absolute -inset-4 border border-accent-light/20 rounded-[2rem] -z-10 group-hover:border-accent-light/40 transition-colors duration-500" />
               
               <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative bg-card transform-gpu transition-transform duration-500 group-hover:scale-[1.02]">
-                <motion.img 
-                  src={`${baseUrl}images/ma-photo/photo-cv.png`} 
-                  alt="Tharsanan" 
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
+                <div className="glitch-image w-full h-full">
+                  <motion.img 
+                    src={`${baseUrl}images/ma-photo/photo-cv.png`} 
+                    alt="Tharsanan" 
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="scanline" />
+                </div>
                 <div className="hidden absolute inset-0 items-center justify-center bg-card text-text-muted text-xs font-bold text-center p-4">
                   Image non trouvée
                 </div>
@@ -281,17 +291,17 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-2 gap-4 md:gap-6">
-            <StatCard number="3" label="Ans d'expérience" delay={0.1} />
-            <StatCard number="2" label="Expériences pro" delay={0.2} />
-            <StatCard number="6" label="Logiciels maîtrisés" delay={0.3} />
-            <StatCard number="3" label="Langues" delay={0.4} />
+            <StatCard number="4" label="Ans d'études" delay={0.1} duration={2000} />
+            <StatCard number="1" label="An d'expérience pro" delay={0.2} duration={2000} />
+            <StatCard number="6" label="Logiciels maîtrisés" delay={0.3} duration={2000} />
+            <StatCard number="100" label="Passionné" suffix="%" delay={0.4} duration={1500} />
           </div>
         </div>
       </section>
 
       {/* FEATURED PROJECTS */}
       <section className="section-container bg-primary">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-6 md:gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -299,16 +309,16 @@ export default function Home() {
           >
             <p className="text-accent-light font-bold tracking-widest uppercase text-[10px] md:text-xs mb-4 flex items-center gap-3">
               <span className="w-6 h-px bg-accent-light/60" />
-              Portfolio
+              Projets Phares
             </p>
-            <h2 className="text-2xl md:text-6xl font-bold mb-4 md:mb-6 tracking-tighter">Projets <span className="highlight">Sélectionnés</span></h2>
+            <h2 className="text-2xl md:text-7xl font-bold mb-4 md:mb-6 tracking-tighter">
+              Une sélection <br />
+              <span className="highlight">des travaux</span>
+            </h2>
           </motion.div>
-          <Link to="/projets" className="btn-outline px-6 md:px-8 py-3 md:py-4 gap-2 text-sm group">
-            Voir tout le portfolio <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
         </div>
 
-        <div className="grid gap-12 md:gap-24">
+        <div className="grid gap-12 md:gap-32 mt-12">
           {featuredProjects.map((project, i) => (
             <motion.div
               key={i}
@@ -316,45 +326,65 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className={`flex flex-col ${i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-20 items-center group`}
+              className={`flex flex-col ${i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-24 items-center group`}
             >
-              <Link to={project.path} className="w-full lg:w-[55%] aspect-[16/9] rounded-2xl overflow-hidden glass-card relative block shadow-2xl">
+              <Link to={project.path} className="w-full lg:w-[60%] aspect-[16/9] rounded-3xl overflow-hidden glass-card relative block shadow-2xl">
                 <img 
                   src={`${baseUrl}${project.img}`} 
                   alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                  className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
                   onError={(e) => { e.target.style.opacity = '0.2'; }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                  <span className="btn-premium scale-90 md:scale-100 backdrop-blur-md bg-accent/80">
-                    Découvrir le projet
+                  <span className="btn-premium scale-90 md:scale-100 backdrop-blur-md bg-accent/80 border border-white/20">
+                    Explorer le projet
                   </span>
                 </div>
               </Link>
-              <div className="w-full lg:w-[45%]">
-                <motion.span 
+              <div className="w-full lg:w-[40%]">
+                <motion.div 
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-accent-light font-bold text-[10px] md:text-xs tracking-[0.3em] uppercase mb-3 md:mb-4 block"
+                  className="flex items-center gap-3 mb-4 md:mb-6"
                 >
-                  {project.category}
-                </motion.span>
-                <h3 className="text-xl md:text-5xl font-bold mb-4 md:mb-6 tracking-tighter group-hover:text-accent-light transition-colors duration-500">
+                  <span className="w-8 h-px bg-accent-light/40" />
+                  <span className="text-accent-light font-bold text-[10px] md:text-xs tracking-[0.3em] uppercase">
+                    {project.category}
+                  </span>
+                </motion.div>
+                <h3 className="text-2xl md:text-6xl font-bold mb-6 md:mb-8 tracking-tighter group-hover:text-accent-light transition-colors duration-500 leading-none">
                   {project.title}
                 </h3>
-                <p className="text-text-muted mb-6 md:mb-10 text-sm md:text-lg leading-relaxed max-w-lg">
+                <p className="text-text-muted mb-8 md:mb-12 text-sm md:text-xl leading-relaxed max-w-md font-medium">
                   {project.desc}
                 </p>
-                <Link to={project.path} className="inline-flex items-center gap-3 font-bold text-accent-light hover:text-white transition-all group/link text-sm md:text-base">
-                  En savoir plus 
-                  <ArrowRight size={20} className="group-hover/link:translate-x-2 transition-transform" />
-                </Link>
+                <Magnetic>
+                  <Link to={project.path} className="inline-flex items-center gap-4 font-bold text-white hover:text-accent-light transition-all group/link text-sm md:text-base bg-white/5 px-6 py-3 rounded-full border border-white/10 hover:border-accent-light/50">
+                    Détails du projet 
+                    <ArrowRight size={20} className="group-hover/link:translate-x-2 transition-transform text-accent-light" />
+                  </Link>
+                </Magnetic>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* EXPLORE MORE BUTTON */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 md:mt-32 text-center"
+        >
+          <Magnetic>
+            <Link to="/projets" className="btn-outline px-10 py-5 gap-3 group text-base md:text-lg border-accent-light/20 hover:border-accent-light">
+              Explorer d'autres projets 
+              <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
+            </Link>
+          </Magnetic>
+        </motion.div>
       </section>
 
       {/* CTA SECTION */}
