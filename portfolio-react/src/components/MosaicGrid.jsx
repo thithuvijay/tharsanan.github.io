@@ -63,26 +63,31 @@ export default function MosaicGrid({ sections, animate = true }) {
               {section.items.map((item, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ 
-                    duration: 0.8, 
-                    delay: idx * 0.05,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.6, 
+                    delay: idx * 0.03,
+                    ease: "easeOut"
                   }}
-                  className={`relative group cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden glass-card aspect-square ${
+                  className={`relative group cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden glass-card aspect-square bg-white/5 ${
                     item.tall ? 'md:row-span-2 md:aspect-auto' : ''
                   } ${item.wide ? 'md:col-span-2 md:aspect-auto' : ''}`}
                   onClick={() => openLb(section.items, idx)}
                 >
+                  <div className="absolute inset-0 bg-white/5 animate-pulse" />
                   <img
                     src={item.src}
                     alt={item.alt || ''}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="relative z-10 w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-0"
                     loading="lazy"
+                    onLoad={(e) => {
+                      e.target.style.opacity = '1';
+                      e.target.previousSibling.style.display = 'none';
+                    }}
                   />
-                  <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-[2px]">
+                  <div className="absolute inset-0 z-20 bg-accent/20 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-[2px]">
                     <div className="p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 transform scale-50 group-hover:scale-100 transition-transform duration-500">
                       <Maximize2 className="text-white" size={24} />
                     </div>
