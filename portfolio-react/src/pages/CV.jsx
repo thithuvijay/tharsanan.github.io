@@ -25,17 +25,15 @@ const education = [
 
 const experiences = [
   {
-    period: "Sept. 2024 — Présent",
-    title: "Chargé de Communication",
+    period: "Sept. 2023 — Présent",
+    title: "Communication & Design Graphique",
     company: "Futsal Drancy",
     location: "Drancy",
-    type: "CDD temps partiel",
+    type: "Stage | Service Civique | Bénévolat",
     missions: [
-      "Gestion et animation des réseaux sociaux (Instagram & Facebook)",
-      "Création de contenus photos et vidéos pendant les entraînements et matchs",
-      "Réalisation de publications, stories et reels (planning éditorial)",
-      "Valorisation des actions du club (tournois, événements solidaires)",
-      "Rédaction de résumés de matchs et annonces sportives"
+      "Bénévole (Depuis Sept. 2023) : Soutien événementiel et animation de communauté.",
+      "Service Civique (Sept. 2024 — Mai 2025) : Gestion des réseaux sociaux et création de contenu digital.",
+      "Stagiaire Communication (Mai — Juin 2025 & Nov — Déc 2025) : Stratégie de visibilité et supports print."
     ]
   },
   {
@@ -52,10 +50,10 @@ const experiences = [
   },
   {
     period: "Mars 2023 — Présent",
-    title: "Community Manager - Photographe",
+    title: "Community Manager — Photographe",
     company: "Objectif Sciences International",
     location: "Paris",
-    type: "Service Civique",
+    type: "Bénévolat",
     missions: [
       "Gestion des réseaux sociaux et élaboration de stratégies de visibilité",
       "Soutien photographique (conférences, expositions, Terra Scientifica)",
@@ -73,24 +71,12 @@ const experiences = [
       "Accompagnement et soutien pédagogique des élèves",
       "Aide à l'organisation et optimisation des méthodes d'apprentissage"
     ]
-  },
-  {
-    period: "Mai 2025 — Juil. 2025",
-    title: "Chargé de Communication",
-    company: "Mairie de Drancy | Futsal Drancy",
-    location: "Drancy",
-    type: "Stage",
-    missions: [
-      "Création de contenus visuels et digitaux",
-      "Gestion des réseaux sociaux et valorisation des événements sportifs",
-      "Collaboration avec des acteurs institutionnels et associatifs"
-    ]
   }
 ]
 
 export default function CV() {
   return (
-    <main className="relative pt-24 md:pt-32 pb-20 bg-primary min-h-screen">
+    <main className="relative pt-24 md:pt-32 pb-20 bg-primary min-h-screen overflow-hidden">
       <section className="section-container relative z-10">
         <header className="flex flex-col md:flex-row md:items-end justify-between mb-24 md:mb-32 gap-10">
           <div className="max-w-3xl">
@@ -169,6 +155,36 @@ export default function CV() {
                   <p className="text-text-muted text-xs md:text-sm leading-relaxed max-w-md">{item.desc}</p>
                 </motion.div>
               ))}
+
+              {/* Realistic 3D Flyer Preview at the bottom of Education */}
+              <div className="mt-32 relative perspective-[1200px] flex justify-center md:justify-start">
+                <a href={`${import.meta.env.BASE_URL}cv.pdf`} target="_blank" rel="noreferrer" className="block">
+                  <motion.div
+                    initial={{ opacity: 0, rotateX: 45, rotateZ: -10, y: 100, scale: 0.8 }}
+                    whileInView={{ opacity: 1, rotateX: 25, rotateZ: -12, y: 0, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 40,
+                      damping: 15,
+                      delay: 0.2
+                    }}
+                    className="relative group cursor-pointer"
+                  >
+                    {/* Shadow under the flyer */}
+                    <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[110%] h-12 bg-black/40 blur-2xl rounded-[100%] scale-x-110 opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+                    
+                    {/* The Flyer itself */}
+                    <div className="relative w-64 md:w-80 rounded-sm overflow-hidden border border-white/10 shadow-2xl transition-all duration-700 group-hover:rotate-x-0 group-hover:rotate-z-0 group-hover:scale-105 group-hover:-translate-y-10">
+                      <img 
+                        src={`${import.meta.env.BASE_URL}images/site/cv-preview.png`} 
+                        alt="CV Miniature Realistic" 
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  </motion.div>
+                </a>
+              </div>
             </div>
           </div>
 

@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <main className="relative pt-24 md:pt-32 pb-20 min-h-screen bg-primary">
       <section className="section-container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32">
+        <div className="grid lg:grid-cols-2 gap-20 lg:gap-48">
           {/* Left Column: Info */}
           <div>
             <motion.div
@@ -25,10 +25,10 @@ export default function Contact() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[0.9]"
+              className="text-4xl md:text-7xl font-black mb-8 tracking-tight md:tracking-tighter leading-[1.1] md:leading-[0.9] font-heading"
             >
               Parlons de votre <br />
-              <span className="highlight italic">prochain projet.</span>
+              <span className="text-accent-light italic">prochain projet.</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}

@@ -51,9 +51,9 @@ export default function Competences() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-8xl font-black mb-8 tracking-tighter leading-[1.1] md:leading-[0.95]"
+            className="text-2xl md:text-8xl font-black mb-8 tracking-tight md:tracking-tighter leading-[1.2] md:leading-[0.95]"
           >
-            Mes <span className="text-accent-light italic">Compétences.</span>
+            Mes <br className="md:hidden" /> <span className="text-accent-light italic">Compétences.</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -66,7 +66,7 @@ export default function Competences() {
         </header>
 
         {/* Core Skills Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-32">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 mb-32">
           {skills.map((skill, i) => (
             <motion.div
               key={i}
@@ -74,13 +74,13 @@ export default function Competences() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="glass-card p-8 rounded-[2.5rem] group hover:border-accent-light/30 transition-all duration-500"
+              className="glass-card p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] group hover:border-accent-light/30 transition-all duration-500"
             >
-              <div className="w-14 h-14 rounded-2xl bg-accent-light/10 flex items-center justify-center text-accent-light mb-8 group-hover:bg-accent group-hover:text-white transition-all duration-500 transform group-hover:rotate-6 shadow-xl">
+              <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-accent-light/10 flex items-center justify-center text-accent-light mb-4 md:mb-8 group-hover:bg-accent group-hover:text-white transition-all duration-500 transform group-hover:rotate-6 shadow-xl">
                 {skill.icon}
               </div>
-              <h3 className="text-2xl font-bold mb-4">{skill.title}</h3>
-              <p className="text-text-muted leading-relaxed text-sm">{skill.desc}</p>
+              <h3 className="text-[12px] md:text-2xl font-bold mb-2 md:mb-4 leading-tight break-words">{skill.title}</h3>
+              <p className="text-text-muted leading-tight md:leading-relaxed text-[10px] md:text-sm">{skill.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -95,7 +95,7 @@ export default function Competences() {
           >
             Logiciels <span className="highlight italic">maîtrisés</span>
           </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {software.map((item, i) => (
               <motion.div
                 key={i}
@@ -103,18 +103,18 @@ export default function Competences() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.8 }}
-                className="glass-card p-8 rounded-[2rem] flex flex-col h-full group"
+                className="glass-card p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] flex flex-col h-full group"
               >
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-4 md:mb-8">
                   <div 
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black shadow-2xl transition-transform duration-500 group-hover:scale-110"
+                    className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center text-lg md:text-2xl font-black shadow-2xl transition-transform duration-500 group-hover:scale-110"
                     style={{ backgroundColor: `${item.color}20`, color: item.color, border: `1px solid ${item.color}40` }}
                   >
                     {item.abbr}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">{item.name}</h3>
-                <p className="text-text-muted text-xs md:text-sm mb-4 md:mb-6 leading-relaxed">
+                <h3 className="text-[12px] md:text-xl font-bold mb-2 md:mb-3 break-words">{item.name}</h3>
+                <p className="text-text-muted text-[10px] md:text-sm mb-3 md:mb-6 leading-tight md:leading-relaxed">
                   {item.desc}
                 </p>
                 <div className="mt-auto">
@@ -144,7 +144,7 @@ export default function Competences() {
           >
             Langues <span className="highlight italic">parlées</span>
           </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {languages.map((lang, i) => (
               <motion.div
                 key={i}
@@ -152,14 +152,14 @@ export default function Competences() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-card p-8 rounded-[2rem] flex items-center gap-6 group hover:border-accent-light/40 transition-all duration-500"
+                className="glass-card p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] flex flex-col md:flex-row md:items-center gap-3 md:gap-6 group hover:border-accent-light/40 transition-all duration-500"
               >
-                <div className="w-16 h-12 rounded-xl overflow-hidden shadow-lg border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                <div className="w-10 h-7 md:w-16 md:h-12 rounded-md md:rounded-xl overflow-hidden shadow-lg border border-white/10 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                   <img src={lang.flag} alt={lang.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-1">{lang.name}</h3>
-                  <p className="text-accent-light text-[10px] font-bold uppercase tracking-widest">{lang.info}</p>
+                  <h3 className="text-[12px] md:text-lg font-bold mb-0.5 md:mb-1 break-words">{lang.name}</h3>
+                  <p className="text-accent-light text-[8px] md:text-[10px] font-bold uppercase tracking-widest leading-tight">{lang.info}</p>
                 </div>
               </motion.div>
             ))}

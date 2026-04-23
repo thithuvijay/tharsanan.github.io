@@ -24,8 +24,7 @@ export default function Footer() {
               <a href={linkedinUrl} target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 hover:bg-accent-light/20 transition-all hover:text-accent-light" title="LinkedIn">
                 <Linkedin size={20} />
               </a>
-              {/* Pointing GitHub icon to LinkedIn as requested by user */}
-              <a href={linkedinUrl} target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 hover:bg-accent-light/20 transition-all hover:text-accent-light" title="GitHub (Redirects to LinkedIn)">
+              <a href="https://github.com/tharsananarul" target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 hover:bg-accent-light/20 transition-all hover:text-accent-light" title="GitHub">
                 <Github size={20} />
               </a>
             </div>
