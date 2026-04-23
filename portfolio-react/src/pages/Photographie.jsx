@@ -53,16 +53,23 @@ export default function Photographie() {
       </div>
 
       {/* Header */}
-      <div className="section-container pt-32 pb-16">
-        <motion.button
+      <div className="section-container pt-40 pb-16 md:pt-48 md:pb-24">
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-text-muted hover:text-white transition-colors mb-12 group"
+          transition={{ duration: 0.5 }}
+          className="mb-12 md:mb-16"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-xs font-bold uppercase tracking-widest">Retour</span>
-        </motion.button>
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-3 text-text-muted hover:text-accent-light transition-all duration-300 group"
+          >
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-light/30 group-hover:bg-accent-light/5 transition-all">
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            </div>
+            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Retour</span>
+          </button>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
