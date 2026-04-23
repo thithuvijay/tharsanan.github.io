@@ -1,38 +1,40 @@
-import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, X, ChevronLeft, ChevronRight, Camera } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import { X, ChevronLeft, ChevronRight, Camera } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const PHOTO_DATA = [
-  { file: 'IMG_1717', ext: 'jpg', label: 'Nature' },
-  { file: 'IMG_1718', ext: 'jpg', label: 'Nature' },
-  { file: 'IMG_1727', ext: 'jpg', label: 'Paysage' },
-  { file: 'IMG_1729', ext: 'jpg', label: 'Paysage' },
-  { file: 'IMG_1693', ext: 'jpg', label: 'Urbain' },
-  { file: 'IMG_0909', ext: 'jpg', label: 'Architecture' },
-  { file: 'IMG_0910', ext: 'jpg', label: 'Architecture' },
-  { file: 'IMG_2811', ext: 'jpg', label: 'Street' },
-  { file: 'IMG_2812', ext: 'jpg', label: 'Street' },
-  { file: 'IMG_2813', ext: 'jpg', label: 'Street' },
-  { file: '053a153c-0145-46ee-b38e-17f9cf95a3c3', ext: 'jpg', label: 'Couleurs' },
-  { file: '898500a0-9c3b-4ccd-9abe-c54dfdf14969', ext: 'jpg', label: 'Couleurs' },
-  { file: 'IMG_0915 (1)', ext: 'jpg', label: 'Portrait' },
+  { file: 'IMG_1717', ext: 'jpg' },
+  { file: 'IMG_1718', ext: 'jpg' },
+  { file: 'IMG_1727', ext: 'jpg' },
+  { file: 'IMG_1729', ext: 'jpg' },
+  { file: 'IMG_1693', ext: 'jpg' },
+  { file: 'IMG_0909', ext: 'jpg' },
+  { file: 'IMG_0910', ext: 'jpg' },
+  { file: 'IMG_2811', ext: 'jpg' },
+  { file: 'IMG_2812', ext: 'jpg' },
+  { file: 'IMG_2813', ext: 'jpg' },
+  { file: '053a153c-0145-46ee-b38e-17f9cf95a3c3', ext: 'jpg' },
+  { file: '898500a0-9c3b-4ccd-9abe-c54dfdf14969', ext: 'jpg' },
+  { file: 'IMG_0915 (1)', ext: 'jpg' },
 ]
 
 export default function Photographie() {
-  const navigate = useNavigate()
   const baseUrl = import.meta.env.BASE_URL
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
   const getThumb = (photo) => `${baseUrl}images/photographie/thumbs/${photo.file}.webp`
   const getFull = (photo) => `${baseUrl}images/photographie/${photo.file}.${photo.ext}`
 
+  const prev = () => setLightboxIndex((i) => (i - 1 + PHOTO_DATA.length) % PHOTO_DATA.length)
+  const next = () => setLightboxIndex((i) => (i + 1) % PHOTO_DATA.length)
+
   // Keyboard nav
   useEffect(() => {
     if (lightboxIndex === null) return
     const handleKey = (e) => {
-      if (e.key === 'ArrowRight') setLightboxIndex(i => (i + 1) % PHOTO_DATA.length)
-      if (e.key === 'ArrowLeft') setLightboxIndex(i => (i - 1 + PHOTO_DATA.length) % PHOTO_DATA.length)
+      if (e.key === 'ArrowRight') next()
+      if (e.key === 'ArrowLeft') prev()
       if (e.key === 'Escape') setLightboxIndex(null)
     }
     window.addEventListener('keydown', handleKey)
@@ -45,6 +47,142 @@ export default function Photographie() {
     return () => { document.body.style.overflow = '' }
   }, [lightboxIndex])
 
+  // Portal lightbox — renders on document.body, escapes any transform parent
+  const lightbox = lightboxIndex !== null ? createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0,0,0,0.95)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        touchAction: 'none',
+      }}
+      onClick={() => setLightboxIndex(null)}
+    >
+      {/* Center block: close button + image + counter */}
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button — right above the image */}
+        <button
+          onClick={() => setLightboxIndex(null)}
+          style={{
+            alignSelf: 'flex-end',
+            marginBottom: '8px',
+            padding: '10px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255,255,255,0.15)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            color: 'white',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.3)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)'}
+        >
+          <X size={20} />
+        </button>
+
+        {/* Image */}
+        <img
+          src={getFull(PHOTO_DATA[lightboxIndex])}
+          alt={`Photo ${lightboxIndex + 1}`}
+          style={{
+            maxWidth: '85vw',
+            maxHeight: '70vh',
+            objectFit: 'contain',
+            borderRadius: '12px',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }}
+        />
+
+        {/* Counter below image */}
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '6px 16px',
+            borderRadius: '999px',
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.05)',
+            color: 'rgba(255,255,255,0.7)',
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          {lightboxIndex + 1} / {PHOTO_DATA.length}
+        </div>
+      </div>
+
+      {/* Nav arrow left */}
+      <button
+        onClick={(e) => { e.stopPropagation(); prev() }}
+        style={{
+          position: 'fixed',
+          left: '8px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          padding: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'white',
+          cursor: 'pointer',
+          backdropFilter: 'blur(8px)',
+          transition: 'background-color 0.2s',
+          zIndex: 10000,
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+      >
+        <ChevronLeft size={18} />
+      </button>
+
+      {/* Nav arrow right */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next() }}
+        style={{
+          position: 'fixed',
+          right: '8px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          padding: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'white',
+          cursor: 'pointer',
+          backdropFilter: 'blur(8px)',
+          transition: 'background-color 0.2s',
+          zIndex: 10000,
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+      >
+        <ChevronRight size={18} />
+      </button>
+    </div>,
+    document.body
+  ) : null
+
   return (
     <main className="relative bg-primary min-h-screen">
       {/* Background grid */}
@@ -53,24 +191,7 @@ export default function Photographie() {
       </div>
 
       {/* Header */}
-      <div className="section-container pt-40 pb-16 md:pt-48 md:pb-24">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 md:mb-16"
-        >
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-3 text-text-muted hover:text-accent-light transition-all duration-300 group"
-          >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-light/30 group-hover:bg-accent-light/5 transition-all">
-              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            </div>
-            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Retour</span>
-          </button>
-        </motion.div>
-
+      <div className="section-container pt-32 pb-8 md:pt-48 md:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +201,7 @@ export default function Photographie() {
             <span className="w-8 h-px bg-accent-light/40" />
             Galerie
           </p>
-          <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4">
+          <h1 className="text-[1.6rem] md:text-7xl font-black tracking-tight md:tracking-tighter mb-4">
             Photo<span className="text-accent-light italic">graphie.</span>
           </h1>
           <p className="text-text-muted text-sm md:text-base max-w-lg mt-4">
@@ -103,89 +224,19 @@ export default function Photographie() {
             >
               <img
                 src={getThumb(photo)}
-                alt={`${photo.label} — photo ${index + 1}`}
+                alt={`Photo ${index + 1}`}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex flex-col items-center justify-center gap-2">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                 <Camera size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="text-white/80 text-[9px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {photo.label}
-                </span>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[200] bg-black/98 flex flex-col items-center justify-center touch-none"
-            onClick={() => setLightboxIndex(null)}
-          >
-            {/* Header in Lightbox (Index + Close) */}
-            <div className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-[220]">
-              <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-white/70 text-[10px] font-bold border border-white/5 uppercase tracking-widest">
-                {lightboxIndex + 1} / {PHOTO_DATA.length}
-              </div>
-              <button
-                className="text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex(null) }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Main Image Container */}
-            <div className="relative w-full h-full flex items-center justify-center p-4">
-              {/* Prev (Hidden on small mobile if needed, or styled as circles) */}
-              <button
-                className="absolute left-2 md:left-8 p-3 md:p-5 rounded-full bg-white/5 hover:bg-white/10 text-white z-[210] transition-all border border-white/5"
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => (i - 1 + PHOTO_DATA.length) % PHOTO_DATA.length) }}
-              >
-                <ChevronLeft size={20} />
-              </button>
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={lightboxIndex}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative max-w-full max-h-full flex flex-col items-center gap-4"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src={getFull(PHOTO_DATA[lightboxIndex])}
-                    alt={`Photo ${lightboxIndex + 1}`}
-                    className="max-w-[90vw] max-h-[70vh] md:max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/5"
-                  />
-                  <div className="text-center">
-                    <p className="text-white font-bold text-xs md:text-sm tracking-widest uppercase">
-                      {PHOTO_DATA[lightboxIndex].label}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Next */}
-              <button
-                className="absolute right-2 md:right-8 p-3 md:p-5 rounded-full bg-white/5 hover:bg-white/10 text-white z-[210] transition-all border border-white/5"
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => (i + 1) % PHOTO_DATA.length) }}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {lightbox}
     </main>
   )
 }
