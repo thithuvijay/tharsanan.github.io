@@ -8,7 +8,7 @@ const passions = [
     id: "gaming",
     title: "Gaming",
     subtitle: "Open World & Immersion",
-    desc: "Fan d'univers ouverts comme GTA V, Red Dead Redemption, Watch Dogs… j'aime me perdre dans des mondes immersifs où liberté et narration se rejoignent.",
+    desc: "Passionné par les univers ouverts comme GTA V, Red Dead Redemption ou Watch Dogs, j'apprécie les expériences immersives où narration et liberté de jeu se complètent.",
     icon: Gamepad2,
     color: "text-blue-400",
     bg: "rgba(37, 99, 235, 0.05)",
@@ -18,7 +18,7 @@ const passions = [
     id: "velo",
     title: "Cyclisme",
     subtitle: "Liberté & Endurance",
-    desc: "Le vélo est mon échappatoire. C'est le dépassement de soi, la découverte de nouveaux horizons et une source d'énergie inépuisable.",
+    desc: "Le cyclisme me permet de me dépasser et de m'évader. C'est un équilibre entre effort, découverte et discipline.",
     icon: Bike,
     color: "text-emerald-400",
     bg: "rgba(16, 185, 129, 0.05)",
@@ -28,7 +28,7 @@ const passions = [
     id: "photo",
     title: "Photographie",
     subtitle: "Instants & Lumière",
-    desc: "À travers l'objectif, je cherche à capturer l'invisible. La photo nourrit mon œil de communicant et mon sens du détail.",
+    desc: "La photographie développe mon regard et mon sens du détail, des compétences que j'applique directement dans mes projets en communication.",
     icon: Camera,
     color: "text-purple-400",
     bg: "rgba(168, 85, 247, 0.05)",
@@ -84,11 +84,11 @@ export default function PassionSection() {
           >
             <p className="text-accent-light font-bold tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 flex items-center gap-3">
               <span className="w-8 h-px bg-accent-light/40" />
-              Mode de Vie
+              En dehors du digital
             </p>
             <h2 className="text-4xl md:text-7xl font-bold mb-4 md:mb-8 tracking-tighter">
               Ce qui me <br />
-              <span className="highlight italic">fait vibrer.</span>
+              <span className="highlight italic">définit aussi.</span>
             </h2>
           </motion.div>
         </div>
@@ -105,7 +105,7 @@ export default function PassionSection() {
                 <p className="text-text-muted text-sm md:text-base leading-relaxed mb-6 md:mb-8">{p.desc}</p>
                 {p.hasMore && (
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
-                    Voir mes photos <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    Découvrir mes photos <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                 )}
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 blur-[50px] rounded-full group-hover:bg-white/10 transition-colors" />

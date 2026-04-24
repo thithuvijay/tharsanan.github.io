@@ -223,13 +223,13 @@ export default function Home() {
               Qui suis-je ?
             </p>
             <h2 className="text-2xl md:text-6xl font-bold mb-6 md:mb-8 tracking-tighter leading-tight">
-              Un parcours <br />
-              <span className="highlight italic">atypique & créatif</span>
+              Un parcours entre <br />
+              <span className="highlight italic">technique et communication</span>
             </h2>
             <div className="space-y-4 md:space-y-6 text-text-muted text-sm md:text-lg leading-relaxed max-w-xl">
               <p>
-                Après avoir commencé un BUT Métiers du Multimédia et de l'Internet, 
-                je me suis réorienté vers la communication, un domaine qui me passionne.
+                Après un début en BUT Métiers du Multimédia et de l'Internet, j'ai choisi de me spécialiser en communication. 
+                Ce parcours m'a permis de développer à la fois des compétences techniques et une vision créative orientée vers le digital.
               </p>
             </div>
             <Link to="/cv" className="mt-8 md:mt-10 inline-flex items-center gap-2 font-bold text-accent-light hover:text-white transition-colors group">
