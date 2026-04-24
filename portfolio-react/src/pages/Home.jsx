@@ -182,49 +182,29 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.5, rotate: 10, y: 100 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="relative flex justify-center lg:justify-end"
-            style={{ 
-              x: mousePos.x * 0.5, 
-              y: mousePos.y * 0.5,
-              rotateX: mousePos.y * -0.1,
-              rotateY: mousePos.x * 0.1
-            }}
+            className="relative flex justify-center lg:justify-end mt-12 lg:mt-0"
           >
-            <div className="relative w-full max-w-[280px] sm:max-w-[360px] aspect-[3.4/4.1] group perspective-1000">
-              {/* Image Frame Border */}
-              <div className="absolute -inset-4 border border-accent-light/20 rounded-[2rem] -z-10 group-hover:border-accent-light/40 transition-colors duration-500" />
-              
-              <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative bg-card transform-gpu transition-transform duration-500 group-hover:scale-[1.02]">
-                <div className="glitch-image w-full h-full">
-                  <motion.img 
-                    src={`${baseUrl}images/ma-photo/photo-cv.png`} 
-                    alt="Tharsanan" 
-                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  <div className="scanline" />
-                </div>
-                <div className="hidden absolute inset-0 items-center justify-center bg-card text-text-muted text-xs font-bold text-center p-4">
-                  Image non trouvée
-                </div>
-              </div>
-
-              {/* Floating Badge */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-4 -right-4 sm:-right-6 glass-card px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-2xl flex items-center gap-2 sm:gap-3 z-20"
-              >
-                <div className="w-2 h-2 rounded-full bg-[#00e676] shadow-[0_0_12px_#00e676] animate-pulse" />
-                <span className="text-[10px] sm:text-xs font-bold tracking-tight text-text-muted">Disponible pour alternance</span>
-              </motion.div>
-            </div>
+            <motion.div
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[450px] group"
+              style={{ 
+                x: mousePos.x * 0.5, 
+                y: mousePos.y * 0.5,
+              }}
+            >
+              <img 
+                src={`${baseUrl}images/site/profile-new.png`} 
+                alt="Tharsanan" 
+                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </motion.div>
           </motion.div>
         </div>
       </section>
