@@ -94,7 +94,7 @@ export default function CV() {
           transition={{ delay: 0.4, duration: 0.8 }}
         >
           <Magnetic>
-            <a href="cv-v3.pdf" download className="btn-premium gap-3 text-lg px-10 py-5 group">
+            <a href="documents/cv-tharsanan-alternance.pdf" download className="btn-premium gap-3 text-lg px-10 py-5 group">
               <Download size={22} className="group-hover:translate-y-1 transition-transform" /> 
               Télécharger mon CV
             </a>
@@ -140,7 +140,7 @@ export default function CV() {
 
               {/* Realistic 3D Flyer Preview at the bottom of Education */}
               <div className="mt-32 relative perspective-[1200px] flex justify-center md:justify-start">
-                <a href={`${import.meta.env.BASE_URL}cv-v3.pdf`} target="_blank" rel="noreferrer" className="block">
+                <a href={`${import.meta.env.BASE_URL}documents/cv-tharsanan-alternance.pdf`} target="_blank" rel="noreferrer" className="block">
                   <motion.div
                     initial={{ opacity: 0, rotateX: 45, rotateZ: -10, y: 100, scale: 0.8 }}
                     whileInView={{ opacity: 1, rotateX: 25, rotateZ: -12, y: 0, scale: 1 }}
@@ -159,8 +159,8 @@ export default function CV() {
                     {/* The Flyer itself */}
                     <div className="relative w-64 md:w-80 rounded-sm overflow-hidden border border-white/10 shadow-2xl transition-all duration-700 group-hover:rotate-x-0 group-hover:rotate-z-0 group-hover:scale-105 group-hover:-translate-y-10">
                       <img 
-                        src={`${import.meta.env.BASE_URL}images/site/cv-preview-v3.png`} 
-                        alt="CV Miniature Realistic" 
+                        src={`${import.meta.env.BASE_URL}images/cv/cv-tharsanan-alternance.png`} 
+                        alt="CV Tharsanan Preview" 
                         className="w-full h-auto"
                       />
                     </div>
