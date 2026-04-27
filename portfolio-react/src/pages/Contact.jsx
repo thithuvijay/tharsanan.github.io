@@ -8,35 +8,9 @@ export default function Contact() {
   const [status, setStatus] = useState('idle') // idle, sending, success, error
   const linkedinUrl = "https://www.linkedin.com/in/tharsanan-arulananthaselvam/"
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setStatus('sending')
-
-    const formData = new FormData(e.target)
-    const data = Object.fromEntries(formData)
-    
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/412d984908829a738c7bafb37a72fb4c", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setStatus('success')
-        e.target.reset()
-      } else {
-        const errorData = await response.json()
-        console.error('FormSubmit Error:', errorData)
-        setStatus('error')
-      }
-    } catch (error) {
-      console.error('Fetch Error:', error)
-      setStatus('error')
-    }
+  const handleSubmit = (e) => {
+    // On laisse le formulaire s'envoyer normalement pour une fiabilité maximale
+    setStatus('sending');
   }
 
   return (
@@ -120,9 +94,13 @@ export default function Contact() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="relative z-10 space-y-8"
+                  action="https://formsubmit.co/tharsananarul@gmail.com"
+                  method="POST"
                   onSubmit={handleSubmit}
                 >
                   <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_next" value="https://tharsanan.com/contact.html" />
+                  <input type="hidden" name="_subject" value="Nouveau message Portfolio !" />
                   
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-3">
