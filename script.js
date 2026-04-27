@@ -276,13 +276,38 @@ const success = document.getElementById('formSuccess');
 form?.addEventListener('submit', (e) => {
   e.preventDefault();
   const btn = form.querySelector('button[type="submit"]');
+  const originalBtnText = btn.innerHTML;
+  
   btn.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;"></span> Envoi...';
   btn.disabled = true;
-  setTimeout(() => {
-    form.reset();
-    btn.style.display = 'none';
-    if (success) success.classList.add('show');
-  }, 1500);
+
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData);
+  
+  fetch("https://formsubmit.co/ajax/tharsananarul@gmail.com", {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success === "true") {
+      form.reset();
+      btn.style.display = 'none';
+      if (success) success.classList.add('show');
+    } else {
+      throw new Error('Erreur FormSubmit');
+    }
+  })
+  .catch((error) => {
+    console.error('Erreur lors de l\'envoi du formulaire:', error);
+    btn.innerHTML = originalBtnText;
+    btn.disabled = false;
+    alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou me contacter par email.');
+  });
 });
 
 document.querySelectorAll('.form-group input, .form-group textarea').forEach(input => {

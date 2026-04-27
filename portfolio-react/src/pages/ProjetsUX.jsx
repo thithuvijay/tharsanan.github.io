@@ -136,7 +136,7 @@ export default function ProjetsUX() {
             <p className="text-base md:text-xl text-text-muted leading-relaxed mb-10">
               Conception d'une plateforme de révision complète pour les étudiants. Focus sur l'organisation des ressources et la facilité de navigation sur mobile.
             </p>
-            <a href="https://tharsananarul.github.io/bts-revision/" target="_blank" rel="noreferrer" className="btn-premium gap-3">
+            <a href="https://tharsananarul.github.io/fdr-bts-com/" target="_blank" rel="noreferrer" className="btn-premium gap-3">
               Voir le site live <ExternalLink size={20} />
             </a>
           </div>

@@ -26,13 +26,13 @@ const education = [
 
 const experiences = [
   {
-    period: "Sept. 2023 — Présent",
+    period: "Sept. 2024 — Présent",
     title: "Communication & Design Graphique",
     company: "Futsal Drancy",
     location: "Drancy",
     type: "Stage | Service Civique | Bénévolat",
     missions: [
-      "Bénévole (Depuis Sept. 2023) : Soutien événementiel et animation de communauté.",
+      "Bénévole (Depuis Janv. 2026) : Soutien événementiel et animation de communauté.",
       "Service Civique (Sept. 2024 — Mai 2025) : Gestion des réseaux sociaux et création de contenu digital.",
       "Stagiaire Communication (Mai — Juin 2025 & Nov — Déc 2025) : Stratégie de visibilité et supports print."
     ]
@@ -54,8 +54,9 @@ const experiences = [
     title: "Community Manager — Photographe",
     company: "Objectif Sciences International",
     location: "Paris & Genève",
-    type: "Bénévolat",
+    type: "Stage | Bénévolat",
     missions: [
+      "Stagiaire (Mars — Avril 2023) puis Bénévole (Depuis Mai 2023).",
       "Couverture photographique et vidéo du Forum de Genève au Palais des Nations (ONU).",
       "Gestion des réseaux sociaux et valorisation des actions de diplomatie scientifique.",
       "Réalisation d'interviews de délégués internationaux et chercheurs pour Terra Scientifica.",

@@ -1,10 +1,42 @@
-import { motion } from 'framer-motion'
-import { Mail, Linkedin, Github, Send, MessageSquare, Phone, Sparkles } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Mail, Linkedin, Send, MessageSquare, Phone, Sparkles, CheckCircle2 } from 'lucide-react'
+import { useState } from 'react'
 import Magnetic from '../components/Magnetic'
 import PageHero from '../components/PageHero'
 
 export default function Contact() {
+  const [status, setStatus] = useState('idle') // idle, sending, success, error
   const linkedinUrl = "https://www.linkedin.com/in/tharsanan-arulananthaselvam/"
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setStatus('sending')
+
+    const formData = new FormData(e.target)
+    const data = Object.fromEntries(formData)
+    
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/tharsananarul@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (result.success === "true") {
+        setStatus('success')
+        e.target.reset()
+      } else {
+        setStatus('error')
+      }
+    } catch (error) {
+      setStatus('error')
+    }
+  }
 
   return (
     <main className="relative pb-20 bg-transparent min-h-screen overflow-hidden">
@@ -59,51 +91,107 @@ export default function Contact() {
               <MessageSquare size={120} />
             </div>
             
-            <form className="relative z-10 space-y-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Nom complet</label>
-                  <input 
-                    type="text" 
-                    placeholder="John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="john@example.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
-                  />
-                </div>
-              </div>
+            <AnimatePresence mode="wait">
+              {status === 'success' ? (
+                <motion.div 
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="relative z-10 flex flex-col items-center justify-center py-20 text-center space-y-6"
+                >
+                  <div className="p-6 rounded-full bg-accent-light/10 text-accent-light">
+                    <CheckCircle2 size={60} />
+                  </div>
+                  <h3 className="text-3xl font-bold">Message envoyé !</h3>
+                  <p className="text-text-muted max-w-xs mx-auto">Merci pour votre message. Je reviens vers vous très rapidement.</p>
+                  <button 
+                    onClick={() => setStatus('idle')}
+                    className="text-accent-light font-bold hover:underline mt-4"
+                  >
+                    Envoyer un autre message
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.form 
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="relative z-10 space-y-8"
+                  onSubmit={handleSubmit}
+                >
+                  <input type="hidden" name="_captcha" value="false" />
+                  
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Nom complet</label>
+                      <input 
+                        required
+                        name="name"
+                        type="text" 
+                        placeholder="John Doe"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Email</label>
+                      <input 
+                        required
+                        name="email"
+                        type="email" 
+                        placeholder="john@example.com"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
+                      />
+                    </div>
+                  </div>
 
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Sujet</label>
-                <input 
-                  type="text" 
-                  placeholder="Collaboration, Opportunité, Question..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
-                />
-              </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Sujet</label>
+                    <input 
+                      name="subject"
+                      type="text" 
+                      placeholder="Collaboration, Opportunité, Question..."
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 focus:bg-white/10"
+                    />
+                  </div>
 
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Message</label>
-                <textarea 
-                  rows="5"
-                  placeholder="Comment puis-je vous aider ?"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 resize-none focus:bg-white/10"
-                ></textarea>
-              </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted px-1">Message</label>
+                    <textarea 
+                      required
+                      name="message"
+                      rows="5"
+                      placeholder="Comment puis-je vous aider ?"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-accent-light transition-all text-white placeholder:text-slate-600 resize-none focus:bg-white/10"
+                    ></textarea>
+                  </div>
 
-              <Magnetic>
-                <button type="button" className="btn-premium w-full gap-3 text-lg py-6 shadow-xl shadow-accent-light/10 group">
-                  Envoyer le message 
-                  <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </button>
-              </Magnetic>
-            </form>
+                  <Magnetic>
+                    <button 
+                      type="submit" 
+                      disabled={status === 'sending'}
+                      className="btn-premium w-full gap-3 text-lg py-6 shadow-xl shadow-accent-light/10 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {status === 'sending' ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        <>
+                          Envoyer le message 
+                          <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                  </Magnetic>
+                  {status === 'error' && (
+                    <p className="text-red-400 text-xs text-center">Une erreur est survenue. Veuillez réessayer.</p>
+                  )}
+                </motion.form>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </section>
